@@ -121,7 +121,7 @@ equalsButton.addEventListener('click', () => {
         let calcString = calcStack.join(' ');
         calcStack = [];
         if (calcString === '0 / 0') {
-            displayContent.innerText = 'I knew you would try that. Now you owe me... IDK but you owe me something really nice.';
+            displayContent.innerText = 'I knew you would try that. Now you owe me... IDK but you owe me something really nice. Like naked cuddles.';
             return;
         }
         let newValue = calc.calculate(calcString);
