@@ -14,18 +14,18 @@ function Calculator() {
     };
 }
 let calc = new Calculator();
-let displayValue = '';
+let calcStack = [];
 
 
 const display = document.querySelector('.display');
 const displayContent = document.createElement('span');
 display.appendChild(displayContent);
-displayContent.innerText = displayValue;
+displayContent.innerText = '';
 
 const clearButton = document.querySelector('.clear');
 clearButton.addEventListener('click', () => {
-    displayValue = '';
-    displayContent.innerText = displayValue;
+    displayContent.innerText = '';
+    calcStack = [];
 });
 
 const plusMinusButton = document.querySelector('.plus-minus');
@@ -33,11 +33,11 @@ plusMinusButton.addEventListener('click', () => {
     if (displayContent.innerText !== '') {
         let currentText = displayContent.innerText;
         let currentValue = Number(currentText);
-        displayValue = (currentValue * -1).toString();
-        if (displayValue.length <= 13) {
-            displayContent.innerText = displayValue;
-        } else if (displayValue.length > 13) {
-            displayContent.innerText = 'overflow';
+        let newValue = (currentValue * -1).toString();
+        if (newValue.length <= 13) {
+            displayContent.innerText = newValue;
+        } else if (newValue.length > 13) {
+            displayContent.innerText = 'overflow - hit the clear button';
         }
     }
 });
@@ -45,26 +45,29 @@ plusMinusButton.addEventListener('click', () => {
 const percentButton = document.querySelector('.percent');
 percentButton.addEventListener('click', () => {
     if (displayContent.innerText !== '') {
-        let currentText = displayContent.innerText;
-        let currentValue = Number(currentText);
-        displayValue = (currentValue * .01).toString();
-        if (displayValue.length <= 13) {
-            displayContent.innerText = displayValue;
-        } else if (displayValue.length > 13) {
-            displayContent.innerText = 'overflow';
+        let currentValue = Number(displayContent.innerText);
+        let newValue = (currentValue / 100);
+        newValue = (Math.round(newValue) * 10000) / 10000;
+        newValue = newValue.toString();
+        if (newValue.length <= 13) {
+            displayContent.innerText = newValue;
+        } else if (newValue.length > 13) {
+            displayContent.innerText = 'overflow - hit the clear button';
         }
     }
 });
 
 const numberButtons = document.querySelectorAll('.number');
 for (button of numberButtons) {
-    let innerText = button.innerText;
+    let number = button.innerText;
     button.addEventListener('click', () => {
-        if (displayValue.length <= 13) {
-            displayValue += innerText;
-            displayContent.innerText = displayValue;
-        } else if (displayValue.length > 13) {
-            displayContent.innerText = 'overflow';
+        if (displayContent.innerText !== '0') {
+            let newValue = displayContent.innerText + number;
+            if (newValue.length <= 13) {
+                displayContent.innerText = newValue;
+            } else if (newValue.length > 13) {
+                displayContent.innerText = 'overflow - hit the clear button';
+            }
         }
     });
 }
@@ -75,11 +78,11 @@ zeroButton.addEventListener('click', () => {
     if (display.innerText[0] === '0') {
         return;
     } else {
-        if (displayValue.length <= 13) {
-            displayValue += zero;
-            displayContent.innerText = displayValue;
-        } else if (displayValue.length > 13) {
-            displayContent.innerText = 'overflow';
+        let newValue = displayContent.innerText + zero;
+        if (newValue.length <= 13) {
+            displayContent.innerText = newValue;
+        } else if (newValue.length > 13) {
+            displayContent.innerText = 'overflow - hit the clear button';
         }
     }
 });
@@ -87,15 +90,41 @@ zeroButton.addEventListener('click', () => {
 const decimalButton = document.querySelector('.decimal');
 decimalButton.addEventListener('click', () => {
     let decimal = decimalButton.innerText;
-    let currentValue = displayContent.innerText;
-    if (currentValue.includes('.')) {
+    if (displayContent.innerText.includes('.')) {
         return;
     } else {
-        if (displayValue.length <= 13) {
-            displayValue += decimal;
-            displayContent.innerText = displayValue;
-        } else if (displayValue.length > 13) {
-            displayContent.innerText = 'overflow';
+        let newValue = displayContent.innerText + decimal;
+        if (newValue.length <= 13) {
+            displayContent.innerText = newValue;
+        } else if (newValue.length > 13) {
+            displayContent.innerText = 'overflow - hit the clear button';
         }
     }
-}); 
+});
+
+const opButtons = document.querySelectorAll('.operation');
+for (button of opButtons) {
+    let operation = button.innerText;
+    button.addEventListener('click', () => {
+        if (calcStack.length === 0) {
+            calcStack.push(displayContent.innerText);
+            displayContent.innerText = '';
+            calcStack.push(operation);
+        }
+    });
+}
+
+const equalsButton = document.querySelector('.equals');
+equalsButton.addEventListener('click', () => {
+    if (calcStack.length === 2) {
+        calcStack.push(displayContent.innerText);
+        let calcString = calcStack.join(' ');
+        calcStack = [];
+        let newValue = calc.calculate(calcString).toString();
+        if (newValue.length <= 13) {
+            displayContent.innerText = newValue;
+        } else if (newValue.length > 13) {
+            displayContent.innerText = 'overflow - hit the clear button';
+        }
+    }
+});
