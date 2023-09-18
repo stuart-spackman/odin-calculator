@@ -25,7 +25,7 @@ html {
 }
 
 .display {
-    border: 1vh solid red;
+    border: 2vh solid rebeccapurple;
     border-radius: 1vh;
     flex: 1;
     background-color: white;
