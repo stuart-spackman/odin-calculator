@@ -17,8 +17,8 @@ html {
     border: 1vh solid black;
     background-color: black;
     border-radius: 1vh;
-    height: 66vh;
-    width: 66vw;
+    height: 88vh;
+    width: 88vw;
 
     display: flex;
     flex-direction: column;
@@ -29,8 +29,11 @@ html {
     border-radius: 1vh;
     flex: 1;
     background-color: white;
-
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 4.8vh;
     display: flex;
+    justify-content: flex-end;
+    align-items: center;
 }
 
 .body {
@@ -49,11 +52,11 @@ div>button {
     flex: 1;
 }
 
-#zero {
+.zero {
     flex: 2;
 }
 
 button {
     border-radius: 1vh;
-    font-size: 3.3vh;
+    font-size: 6.6vh;
 }
