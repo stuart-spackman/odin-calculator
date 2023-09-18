@@ -47,7 +47,7 @@ percentButton.addEventListener('click', () => {
     if (displayContent.innerText !== '') {
         let currentValue = Number(displayContent.innerText);
         let newValue = (currentValue / 100);
-        newValue = (Math.round(newValue) * 10000) / 10000;
+        newValue = (Math.round(newValue * 100000)) / 100000;
         newValue = newValue.toString();
         if (newValue.length <= 13) {
             displayContent.innerText = newValue;
@@ -120,7 +120,13 @@ equalsButton.addEventListener('click', () => {
         calcStack.push(displayContent.innerText);
         let calcString = calcStack.join(' ');
         calcStack = [];
-        let newValue = calc.calculate(calcString).toString();
+        if (calcString === '0 / 0') {
+            displayContent.innerText = 'I knew you would try that. Now you owe me... IDK but you owe me something really nice.';
+            return;
+        }
+        let newValue = calc.calculate(calcString);
+        newValue = (Math.round(newValue * 100000)) / 100000;
+        newValue = newValue.toString();
         if (newValue.length <= 13) {
             displayContent.innerText = newValue;
         } else if (newValue.length > 13) {
