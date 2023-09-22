@@ -53,10 +53,6 @@ div>button {
     flex: 1;
 }
 
-.zero {
-    flex: 2;
-}
-
 button {
     border-radius: 1vh;
     font-size: 6.6vh;
